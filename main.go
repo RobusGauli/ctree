@@ -10,14 +10,7 @@ import (
 func main() {
 	// try parsing the last indexed value of the argument list
 	var rootPath string
-	if len(os.Args) <= 1 {
-		currentDir, err := os.Getwd()
-		if err != nil {
-			color.HiRed("Could not find the current directory")
-			os.Exit(1)
-		}
-		rootPath = currentDir
-	} else {
+	if len(os.Args) > 1 {
 		lastIndex := len(os.Args) - 1
 		rootPath = os.Args[lastIndex]
 
@@ -31,6 +24,13 @@ func main() {
 			os.Exit(1)
 		}
 	}
+
+	currentDir, err := os.Getwd()
+	if err != nil {
+		color.HiRed("Could not find the current directory")
+		os.Exit(1)
+	}
+	rootPath = currentDir
 
 	tree := NewTree(rootPath)
 	// now we can call a tree on it
