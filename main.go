@@ -33,23 +33,7 @@ func main() {
 	}
 	rootPath = currentDir
 
-	tree := NewTree(rootPath)
-	// now we can call a tree on it
-	tree.renderTree()
-}
-
-// NewTree returns pointer to Tree struct
-func NewTree(rootPath string) *Tree {
-	return &Tree{rootPath: rootPath}
-}
-
-// Tree struct that holds root path
-type Tree struct {
-	rootPath string
-}
-
-func (tree *Tree) renderTree() {
-	render(tree.rootPath, "")
+	render(rootPath, "")
 }
 
 func render(currentPath, indt string) {
