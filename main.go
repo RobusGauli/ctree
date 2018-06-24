@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"io/ioutil"
 	"os"
+	"path"
 
 	"github.com/fatih/color"
 )
@@ -34,8 +35,7 @@ func main() {
 
 	tree := NewTree(rootPath)
 	// now we can call a tree on it
-
-	fmt.Println(tree)
+	tree.renderTree()
 }
 
 // NewTree returns pointer to Tree struct
@@ -49,5 +49,29 @@ type Tree struct {
 }
 
 func (tree *Tree) renderTree() {
+	render(tree.rootPath, "")
+}
 
+func render(currentPath, indt string) {
+	fileInfo, err := os.Lstat(currentPath)
+	if err != nil {
+		// silently fail
+		color.HiRed("Something went wrong.Exiting")
+		os.Exit(1)
+	}
+	if !fileInfo.IsDir() {
+		return
+	}
+
+	fileInfos, err := ioutil.ReadDir(currentPath)
+	if err != nil {
+		color.HiRed("Something went wrong.Exiting")
+		os.Exit(1)
+	}
+	for _, fInfo := range fileInfos {
+		color.HiGreen(fInfo.Name())
+		if fInfo.IsDir() {
+			render(path.Join(currentPath, fInfo.Name()), "")
+		}
+	}
 }
