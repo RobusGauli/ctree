@@ -52,10 +52,28 @@ func render(currentPath, indt string) {
 		color.HiRed("Something went wrong.Exiting")
 		os.Exit(1)
 	}
-	for _, fInfo := range fileInfos {
-		color.HiGreen(fInfo.Name())
+	for index, fInfo := range fileInfos {
+		fdName := fInfo.Name()
+		if len(fdName) >= 1 && fdName[0] == '.' {
+			continue
+		}
+		add := indt + "⤷ "
+		print(add)
 		if fInfo.IsDir() {
-			render(path.Join(currentPath, fInfo.Name()), "")
+			color.HiGreen(fdName)
+		} else {
+
+			color.HiBlue(fdName)
+		}
+
+		if fInfo.IsDir() {
+			var add string
+			if index == len(fileInfos)-1 {
+				add = indt + "  "
+			} else {
+				add = indt + "⤷ "
+			}
+			render(path.Join(currentPath, fdName), add)
 		}
 	}
 }
