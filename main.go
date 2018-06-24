@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
-import "github.com/fatih/color"
+import (
+	"fmt"
+
+	"github.com/fatih/color"
+)
 
 func main() {
-	fmt.Println("THis is the awesome go program")
-	color.HiBlue("This is the hi blue thisn")
+	color.Cyan("This is awesom")
+	fmt.Println("This is awesome way to get started into golang world.clear")
 }
