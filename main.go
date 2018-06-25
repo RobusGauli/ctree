@@ -53,21 +53,17 @@ func render(currentPath, indt string) {
 		color.HiRed("Something went wrong.Exiting")
 		os.Exit(1)
 	}
-	firstFileFlag := true
+
 	for index, fInfo := range fileInfos {
 		fdName := fInfo.Name()
 		if len(fdName) >= 1 && fdName[0] == '.' {
 			continue
 		}
-		add := "⎮ "
+		add := "│ "
 
 		if len(fileInfos)-1 == index {
 			fmt.Print(indt, "└──")
 			add = " "
-		} else if firstFileFlag == true {
-			fmt.Print(indt, "└──")
-			firstFileFlag = false
-
 		} else {
 			fmt.Print(indt, "├──")
 		}
