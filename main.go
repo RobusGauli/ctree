@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -11,10 +12,12 @@ import (
 
 func main() {
 	// try parsing the last indexed value of the argument list
+	flag.Parse()
+	args := flag.Args()
 	var rootPath string
-	if len(os.Args) > 1 {
-		lastIndex := len(os.Args) - 1
-		rootPath = os.Args[lastIndex]
+	if len(args) >= 1 {
+		lastIndex := len(args) - 1
+		rootPath = args[lastIndex]
 
 		fileInfo, err := os.Lstat(rootPath)
 		if err != nil {
@@ -27,12 +30,14 @@ func main() {
 		}
 	}
 
-	currentDir, err := os.Getwd()
-	if err != nil {
-		color.HiRed("Could not find the current directory")
-		os.Exit(1)
+	if rootPath == "" {
+		currentDir, err := os.Getwd()
+		if err != nil {
+			color.HiRed("Could not find the current directory")
+			os.Exit(1)
+		}
+		rootPath = currentDir
 	}
-	rootPath = currentDir
 
 	render(rootPath, "")
 }
