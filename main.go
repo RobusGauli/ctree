@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -52,13 +53,25 @@ func render(currentPath, indt string) {
 		color.HiRed("Something went wrong.Exiting")
 		os.Exit(1)
 	}
+	firstFileFlag := true
 	for index, fInfo := range fileInfos {
 		fdName := fInfo.Name()
 		if len(fdName) >= 1 && fdName[0] == '.' {
 			continue
 		}
-		add := indt + "⤷ "
-		print(add)
+		add := "⎮ "
+
+		if len(fileInfos)-1 == index {
+			fmt.Print(indt, "└──")
+			add = " "
+		} else if firstFileFlag == true {
+			fmt.Print(indt, "└──")
+			firstFileFlag = false
+
+		} else {
+			fmt.Print(indt, "├──")
+		}
+
 		if fInfo.IsDir() {
 			color.HiGreen(fdName)
 		} else {
@@ -67,13 +80,8 @@ func render(currentPath, indt string) {
 		}
 
 		if fInfo.IsDir() {
-			var add string
-			if index == len(fileInfos)-1 {
-				add = indt + "  "
-			} else {
-				add = indt + "⤷ "
-			}
-			render(path.Join(currentPath, fdName), add)
+
+			render(path.Join(currentPath, fdName), indt+add)
 		}
 	}
 }
